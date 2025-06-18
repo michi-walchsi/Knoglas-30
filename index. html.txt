@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>🎧 Dein Song</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: black;
+      color: white;
+      font-family: sans-serif;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      height: 100vh;
+    }
+    iframe {
+      border: none;
+      width: 100%;
+      height: 80px;
+      display: none;
+    }
+    #revealBtn {
+      font-size: 20px;
+      padding: 10px 20px;
+      margin-top: 20px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🎵 Song läuft…</h1>
+  <p>Tippe, um Titel & Interpret zu sehen</p>
+
+  <button id="revealBtn">🔓 Titel anzeigen</button>
+
+  <iframe id="player" src=""></iframe>
+
+  <script>
+    // Spotify-Link automatisch aus URL holen
+    const urlParams = new URLSearchParams(window.location.search);
+    const spotifyLink = urlParams.get('track'); // erwartet: ?track=https://open.spotify.com/...
+
+    if (spotifyLink) {
+      const embedLink = spotifyLink.replace('/track/', '/embed/track/');
+      const iframe = document.getElementById('player');
+      iframe.src = embedLink;
+      document.getElementById('revealBtn').style.display = 'inline-block';
+
+      document.getElementById('revealBtn').addEventListener('click', () => {
+        iframe.style.display = 'block';
+        document.getElementById('revealBtn').style.display = 'none';
+        document.querySelector('p').style.display = 'none';
+      });
+    } else {
+      document.body.innerHTML = '<h2>Kein Song-Link gefunden 😢</h2>';
+    }
+  </script>
+
+</body>
+</html>
